@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+</head>
+<body style="background-image: url(https://www.gonzaga.edu/-/media/Website/Images/Body-Content/Giving/Zags-at-Home/Zoom-BGs/spires-dark-blue.ashx?la=en&hash=EDD0920EFC7D8A967AFA14E2789AC1549F0F889E);">
+<div class="container">
+<div style="margin-left: 30%;margin-right: 30%;margin-top: 100px;">
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="basic-addon3">Username</span>
+        </div>
+        <input type="text" placeholder="Email" class="form-control" id="email" aria-describedby="basic-addon3">
+      </div>
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="basic-addon3">Password</span>
+        </div>
+        <input type="password" placeholder="Password" class="form-control" id="password" aria-describedby="basic-addon3">
+      </div>
+      <button type="button" class="btn btn-success" onclick="login()">Login</button>
+      <button type="button" class="btn btn-primary" onclick="register()">Register</button>
+      <div><a href="verify.html" style='color: blue;'>Forgot Password?</a></div>
+</div>
+</div>
+
+
+<script>
+    async function login(){
+      try{  let res=await fetch("http://localhost:3000/users/login",{
+            method:"POST",
+            body:JSON.stringify({
+                email:document.getElementById("email").value,
+                password:document.getElementById("password").value
+            }),
+            headers:{
+                "Content-Type":"application/json",
+            }
+            
+        })
+        let result=await res.json()
+        if(result.token){
+            localStorage.setItem("token",result.token)
+            localStorage.setItem("user_name",document.getElementById("email").value)
+            window.open("dashboard.html","_self")
+        }
+        else{
+            alert(result.message)
+            location.reload();
+        }
+    }
+       
+        catch(err){console.log(err)}
+    }
+    
+    async function register(){
+        let res=await fetch("http://localhost:3000/users/register",{
+            method:"POST",
+            body:JSON.stringify({
+                email:document.getElementById("email").value,
+                password:document.getElementById("password").value
+            }),
+            headers:{
+                "Content-Type":"application/json",
+                
+            }
+        })
+        let result=await res.json()
+        if(result.message=="User already exist")
+        {
+            alert("User already exist, Try Login")
+            location.reload();
+        }
+        else{
+            alert("User registered. Can Login now")
+            location.reload();
+        }
+    }
+</script>
+</body>

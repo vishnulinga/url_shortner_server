@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+</head>
+<body style="background-image: url(https://www.gonzaga.edu/-/media/Website/Images/Body-Content/Giving/Zags-at-Home/Zoom-BGs/spires-dark-blue.ashx?la=en&hash=EDD0920EFC7D8A967AFA14E2789AC1549F0F889E);">
+<div class="container">
+<div style="margin-left: 30%;margin-right: 30%;margin-top: 100px;">
+    
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="basic-addon3">UserID</span>
+        </div>
+        <input type="text" placeholder="UserID" class="form-control" id="UserID" aria-describedby="basic-addon3">
+      </div>
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="basic-addon3">Email</span>
+        </div>
+        <input type="text" placeholder="abc@example.com" class="form-control" id="email" aria-describedby="basic-addon3">
+      </div>
+      <button type="button" class="btn btn-success" onclick="sendmail()">Reset</button>
+     
+</div>
+</div>
+
+
+<script>
+    async function sendmail(){
+      try{  
+        
+        
+        
+        let res=await fetch("http://localhost:3000/users/sendmail",{
+            method:"POST",
+            body:JSON.stringify({
+                user_ID:document.getElementById("UserID").value,
+                email:document.getElementById("email").value
+            }),
+            headers:{
+                "Content-Type":"application/json",
+            }
+            
+        })
+        let result=await res.json()
+        if(result.message=="Mail sent"){
+          alert("Verify your mail by clicking the link sent to your mail")
+           
+        }
+        else{
+            console.log(result)
+           alert("Wrong UserID")
+           
+              location.reload();
+          
+        }
+    
+           
+    
+       
+        
+    }catch(err){console.log(err)}
+    
+}
+</script>
+</body>

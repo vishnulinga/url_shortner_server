@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<head>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+<style>
+  
+  th,td,tr{
+    border:maroon solid 2px;
+    border-style: groove;
+    color:white;
+  }
+</style>
+  </head>
+<body style="background-image: url(https://www.gonzaga.edu/-/media/Website/Images/Body-Content/Giving/Zags-at-Home/Zoom-BGs/spires-dark-blue.ashx?la=en&hash=EDD0920EFC7D8A967AFA14E2789AC1549F0F889E);">
+<div class="container">
+<div style="margin-top: 50px;margin-left: 30%;margin-right: 30%;">
+    <h1>URL Shortner</h1>
+<div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text" id="basic-addon3">Long URL</span>
+    </div>
+    <input type="text" placeholder="https://example.com" class="form-control" id="longurl" aria-describedby="basic-addon3">
+  </div>
+   <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text" id="basic-addon3">Short URL</span>
+    </div>
+    <input type="text" class="form-control" id="shorturl" aria-describedby="basic-addon3">
+  </div>
+  <button type="button"  class="btn btn-success" onclick="gen()">Generate short URL</button>
+  <button type="button"  class="btn btn-primary" onclick="stats()">Show Stats</button>
+  <button type="button"  class="btn btn-danger" onclick="logout()">Logout</button>
+
+  <div>
+    <table id="stats" style="border:maroon solid 2px;border-style: groove;margin-top: 30px;">
+     
+
+    </table>
+  </div>
+ 
+</div>
+</div>
+
+<script>
+   function logout(){
+       localStorage.removeItem("token")
+       localStorage.removeItem("user_name")
+       window.open("index.html","_self")
+
+   }
+
+   async function gen(){
+     var res=await fetch("http://localhost:3000/users/dashboard", {
+       method:"POST",
+       body:JSON.stringify({
+         "longurl":document.getElementById("longurl").value
+       }),
+       headers:{
+                "Content-Type":"application/json",
+                "authorization":localStorage.getItem("token")
+                }
+     })
+var shorturl=await res.json()
+console.log(shorturl)
+document.getElementById("shorturl").value=shorturl.shorturl
+
+
+
+   }
+
+async function stats(){
+var res=await fetch("http://localhost:3000/users/stats",{
+  method:"POST",
+  headers:{
+                "Content-Type":"application/json"
+                
+          }
+})
+var arr=await res.json()
+
+var row=document.createElement("tr")
+  var col1=document.createElement("th")
+  col1.innerText="Long URL"
+  row.appendChild(col1)
+  var col2=document.createElement("th")
+  col2.innerText="Short URL"
+  row.appendChild(col2)
+  var col3=document.createElement("th")
+  col3.innerText="Clicks"
+  row.appendChild(col3)
+document.getElementById("stats").appendChild(row)
+
+arr.forEach(ele => {
+  console.log(ele)
+  var row=document.createElement("tr")
+  var col1=document.createElement("td")
+  col1.innerText=ele.longurl
+  row.appendChild(col1)
+  var col2=document.createElement("td")
+  col2.innerText=ele.shorturl
+  row.appendChild(col2)
+  var col3=document.createElement("td")
+  col3.innerText=ele.clicks
+  row.appendChild(col3)
+document.getElementById("stats").appendChild(row)
+
+});
+
+}
+
+</script>
+</body>
