@@ -50,7 +50,7 @@
    }
 
    async function gen(){
-     var res=await fetch("http://localhost:3000/users/dashboard", {
+     var res=await fetch("https://longshorturl.herokuapp.com/users/dashboard", {
        method:"POST",
        body:JSON.stringify({
          "longurl":document.getElementById("longurl").value
@@ -69,7 +69,7 @@ document.getElementById("shorturl").value=shorturl.shorturl
    }
 
 async function stats(){
-var res=await fetch("http://localhost:3000/users/stats",{
+var res=await fetch("https://longshorturl.herokuapp.com/users/stats",{
   method:"POST",
   headers:{
                 "Content-Type":"application/json"

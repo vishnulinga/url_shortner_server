@@ -26,7 +26,7 @@
 
 <script>
     async function login(){
-      try{  let res=await fetch("http://localhost:3000/users/login",{
+      try{  let res=await fetch("https://longshorturl.herokuapp.com/users/login",{
             method:"POST",
             body:JSON.stringify({
                 email:document.getElementById("email").value,
@@ -53,7 +53,7 @@
     }
     
     async function register(){
-        let res=await fetch("http://localhost:3000/users/register",{
+        let res=await fetch("https://longshorturl.herokuapp.com/users/register",{
             method:"POST",
             body:JSON.stringify({
                 email:document.getElementById("email").value,

@@ -111,7 +111,7 @@ router.post('/sendmail', async function(req, res, next) {
     from: 'bitlyappexe@gmail.com',
     to:req.body.email,
     subject: 'Password reset authentication',
-    text:`http://localhost:3000/users/verify/${rand}`
+    text:`https://longshorturl.herokuapp.com/users/verify/${rand}`
   };
   
   transporter.sendMail(mailOptions, function(error, info){
@@ -154,7 +154,7 @@ router.post('/dashboard',authenticate, async function(req, res, next) {
   
 var longurl=req.body.longurl
 var rand=Math.random().toString(36).slice(2,7)
-var shorturl=`http://localhost:3000/users/${rand}`
+var shorturl=`https://longshorturl.herokuapp.com/users/${rand}`
 var client=await mongoClient.connect(url,{useUnifiedTopology: true })
 var db=client.db("login")
 var store=await db.collection("url").insertOne({"longurl":longurl,"shorturl":shorturl,"clicks":0})
@@ -171,10 +171,10 @@ try{
   var client=await mongoClient.connect(url,{useUnifiedTopology:true})
   var db=client.db("login")
   console.log(req.params.shorturl)
-  var result=await db.collection("url").findOne({"shorturl":`http://localhost:3000/users/${req.params.shorturl}`})
+  var result=await db.collection("url").findOne({"shorturl":`https://longshorturl.herokuapp.com/users/${req.params.shorturl}`})
   if(result){
     
-  var clicks=await db.collection("url").findOneAndUpdate({"shorturl":`http://localhost:3000/users/${req.params.shorturl}`},{$set:{"clicks":result.clicks+1}})  
+  var clicks=await db.collection("url").findOneAndUpdate({"shorturl":`https://longshorturl.herokuapp.com/users/${req.params.shorturl}`},{$set:{"clicks":result.clicks+1}})  
   var longurl=result.longurl
   console.log(longurl)
   res.redirect(`${longurl}`)
