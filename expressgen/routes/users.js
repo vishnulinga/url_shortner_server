@@ -145,8 +145,7 @@ router.get('/verify/:token',async function(req,res,next){
   {
   res.render('reset');}
   else{
-  res.json({
-    message:"Login now"})
+  res.redirect("https://nostalgic-neumann-3c5b8f.netlify.app")
   }
 })
 //.........................................................................
